@@ -3,6 +3,10 @@
 . $HOME/bin/utils.sh
 begintrap
 
-now=$(now_branch)
-cd $REPOS/miyagaw61/linux_kernel_tagfiles/$now
+version=$(now_branch)
+is_for=$(echo $version | grep -o "for-")
+if [[ ! -z $is_for ]] ;then
+    version="v"$(echo $version | sed -E 's@for-@@g')
+fi
+cd $REPOS/miyagaw61/linux_kernel_tagfiles/$version
 global $@
