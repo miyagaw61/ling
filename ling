@@ -40,11 +40,11 @@ if [[ -e $REPOS/$USER/linux_kernel_tagfiles/$version ]] ;then
     tags_dir=$REPOS/$USER/linux_kernel_tagfiles/$version
 fi
 if [[ -z $tags_dir ]] ;then
-    if [[ ! -z $TAGS_DIR ]] ;then
-        error "Please set \$TAGS_DIR"
+    if [[ ! -z $LINUX_TAGS_DIR ]] ;then
+        error "Please set \$LINUX_TAGS_DIR"
         exit 1
     fi
-    tags_dir=$TAGS_DIR
+    tags_dir=$LINUX_TAGS_DIR
 fi
 
 cd $tags_dir
