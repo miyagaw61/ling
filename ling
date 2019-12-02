@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
-. $HOME/bin/utils.sh
-begintrap
+usage() {
+    echo "Usage: ling [global-options...] [version=<kernel_version>]"
+    exit 0
+}
 
-version=$(now_branch)
+error() {
+    echo -e "\n\n\033[31;01m[!] ${1}\033[00m\n\n"
+}
+
+version=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's@\* \(.*\)@\1@')
 
 args=()
 for x in $@ ;do
+    if [[ $x = "-h" ]] ;then
+        usage
+    fi
     if [[ $(echo $x | grep -E -o "version=") ]] ;then
         version=$(echo $x | sed -E 's@version=@@g')
         if [[ ! $(echo $version | grep -o "v") ]] ;then
@@ -20,5 +29,18 @@ done
 if [[ $(echo $version | grep -o "for-") ]] ;then
     version="v"$(echo $version | sed -E 's@for-@@g')
 fi
-cd $REPOS/miyagaw61/linux_kernel_tagfiles/$version
+
+tags_dir=""
+if [[ -e $REPOS/$USER/linux_kernel_tagfiles/$version ]] ;then
+    tags_dir=$REPOS/$USER/linux_kernel_tagfiles/$version
+fi
+if [[ -z $tags_dir ]] ;then
+    if [[ ! -z $TAGS_DIR ]] ;then
+        error "Please set \$TAGS_DIR"
+        exit 1
+    fi
+    tags_dir=$TAGS_DIR
+fi
+
+cd $tags_dir
 global ${args[@]}
