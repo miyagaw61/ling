@@ -9,6 +9,11 @@ error() {
     echo -e "\n\n\033[31;01m[!] ${1}\033[00m\n\n"
 }
 
+if [[ -z $REPOS ]] ;then
+    error 'Please set $REPOS'
+    exit 1
+fi
+
 version=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's@\* \(.*\)@\1@')
 
 args=()
@@ -36,7 +41,7 @@ fi
 
 tags_dir=""
 if [[ -e $REPOS/$USER/linux_kernel_tagfiles/$version ]] ;then
-    tags_dir=$REPOS/$USER/linux_kernel_tagfiles/$version
+    tags_dir=$REPOS/$USER/linux_kernel_tagfiles/
 fi
 if [[ -z $tags_dir ]] ;then
     if [[ ! -z $LINUX_TAGS_DIR ]] ;then
@@ -46,5 +51,9 @@ if [[ -z $tags_dir ]] ;then
     tags_dir=$LINUX_TAGS_DIR
 fi
 
-cd $tags_dir
+for x in GTAGS GRTAGS GPATH ;do
+    rm -rf $REPOS/torvalds/linux/${x}
+    ln -s $tags_dir/${version}/${x} $REPOS/torvalds/linux/${x}
+done
+cd $REPOS/torvalds/linux/
 global ${args[@]}
