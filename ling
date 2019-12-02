@@ -30,6 +30,11 @@ if [[ $(echo $version | grep -o "for-") ]] ;then
     version="v"$(echo $version | sed -E 's@for-@@g')
 fi
 
+echo $version
+if [[ -z $version ]] ;then
+    version="v$(uname -r | grep -E -o "[0-9]+\.[0-9]")"
+fi
+
 tags_dir=""
 if [[ -e $REPOS/$USER/linux_kernel_tagfiles/$version ]] ;then
     tags_dir=$REPOS/$USER/linux_kernel_tagfiles/$version
