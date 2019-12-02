@@ -51,9 +51,10 @@ if [[ -z $tags_dir ]] ;then
     tags_dir=$LINUX_TAGS_DIR
 fi
 
+cd $REPOS/torvalds/linux/
+git checkout $version
 for x in GTAGS GRTAGS GPATH ;do
-    rm -rf $REPOS/torvalds/linux/${x}
+    rm -rf $x
     ln -s $tags_dir/${version}/${x} $REPOS/torvalds/linux/${x}
 done
-cd $REPOS/torvalds/linux/
 global ${args[@]}
