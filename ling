@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+. $HOME/bin/utils.sh
+begintrap
+
 now=$(now_branch)
 cd $REPOS/miyagaw61/linux_kernel_tagfiles/$now
 global $@
