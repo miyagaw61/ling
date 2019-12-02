@@ -4,8 +4,21 @@
 begintrap
 
 version=$(now_branch)
+
+args=()
+for x in $@ ;do
+    if [[ $(echo $x | grep -E -o "version=") ]] ;then
+        version=$(echo $x | sed -E 's@version=@@g')
+        if [[ ! $(echo $version | grep -o "v") ]] ;then
+            version="v${version}"
+        fi
+        continue
+    fi
+    args+=$x
+done
+
 if [[ $(echo $version | grep -o "for-") ]] ;then
     version="v"$(echo $version | sed -E 's@for-@@g')
 fi
 cd $REPOS/miyagaw61/linux_kernel_tagfiles/$version
-global $@
+global $args
