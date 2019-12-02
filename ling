@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+now=$(now_branch)
+cd $REPOS/miyagaw61/linux_kernel_tagfiles/$now
+global $@
