@@ -14,11 +14,11 @@ for x in $@ ;do
         fi
         continue
     fi
-    args+=$x
+    args+=($x)
 done
 
 if [[ $(echo $version | grep -o "for-") ]] ;then
     version="v"$(echo $version | sed -E 's@for-@@g')
 fi
 cd $REPOS/miyagaw61/linux_kernel_tagfiles/$version
-global $args
+global ${args[@]}
